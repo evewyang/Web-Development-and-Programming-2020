@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Daily Log</title>
+	<meta charset="utf-8">
+	<link rel="stylesheet" type="text/css" href="phase_2_style.css">
+</head>
+<body>
+	<h1>My Daily Log</h1>
+	<!-- tabs and forms for the user  -->
+	<div id="left">
+		<div id="tabs">
+			<!-- the 3 tabs -->
+			<div id="tab_food" class="tab active" data-myform = "#form_food">Food</div>
+			<div id="tab_exercise" class="tab" data-myform = "#form_exercise">Exercise</div>
+			<div id="tab_mindfulness" class="tab" data-myform = "#form_mindfulness">Mindfulness</div>
+		</div>
+		<!-- the input form -->
+		<div id="forms">
+			<div id="form_food" class="form">
+				What did you eat today?</br>
+				<input type="text" id="food_input">
+				<button id="food_add" data-mycolor="#F63" data-mycategory = "food_item">Add</button>
+			</div>
+			<div id="form_exercise" class="form hidden">
+				What did you do to move?</br>
+				<input type="text" id="exercise_input">
+				<button id="exercise_add" data-mycolor="#0F9" data-mycategory = "exercise_item">Add</button>
+			</div>
+			<div id="form_mindfulness" class="form hidden">
+				How did you stay present?</br>
+				<input type="text" id="mindfulness_input">
+				<button id="mindfulness_add" data-mycolor="#96F" data-mycategory = "mindfulness_item">Add</button>
+			</div>
+		</div>
+		
+	</div>
+	<!-- filter and actual tasks that were added to the list -->
+	<div id="right">Filter:
+		<select id="filter">
+			<option value="all">All</option>
+			<option value="food_item">Food</option>
+			<option value="exercise_item">Exercise</option>
+			<option value="mindfulness_item">Mindfulness</option>
+		</select>
+		<button id="delete_entries" style="margin-left: 50px">Delete Entries</button>
+	</div>
+	<script type="text/javascript">
+	//Tabs & display 
+		//have all tabs listen for the mouse events
+		let allTabs = document.querySelectorAll(".tab");
+		//visit all tabs to add mouse events
+		for (let i = 0; i< allTabs.length; i++){
+			allTabs[i].onclick = function(event){
+				//remove all .active from all other tabs
+				document.querySelector('.active').classList.remove('active');
+				//add the active tab to this tab
+				event.currentTarget.classList.add('active');
+				//hide all existing forms
+				let allForms = document.querySelectorAll('.form');
+				for (let j = 0; j < allForms.length; j++) {
+					allForms[j].classList.add('hidden');
+				}
+				//display the JUST form div for this catagory
+				document.querySelector(event.currentTarget.dataset.myform).classList.remove('hidden')
+			}
+		}
+	//"Add" buttons and #right Div
+		//get the "Delete Entries" button
+		let deleteEntries = document.getElementById("delete_entries");
+		//get all form buttons
+		let allButtons = document.querySelectorAll(".form button");
+		//funcitoning the mouse event for each "Add" button
+		for (let i = 0; i < allButtons.length; i++){
+			allButtons[i].onclick = function(event){
+				//get the input text
+				let text = event.currentTarget.previousElementSibling.value;
+				//clearing the text that was just typed in the form
+				event.currentTarget.previousElementSibling.value = null;
+				//create the new div for putting on the #right
+				let tempDiv = document.createElement('div');
+				// tempDiv.innerHTML = text;
+				tempDiv.classList.add('item');
+				tempDiv.style["background-color"] = event.currentTarget.dataset.mycolor;
+				//set the category of the item div so that it can be classified when using select tag
+				tempDiv.dataset.mycategory = event.currentTarget.dataset.mycategory;
+				//append tempDiv to the #right container
+				document.querySelector('#right').appendChild(tempDiv);
+				//add all sub buttons for operations
+				addButtons(tempDiv);
+				//add the text box
+				setText(tempDiv,text);
+				//update the up&down buttons
+				changeUpDown();
+			}
+		}
+		function setText(thisDiv,thisText){
+			let newText = document.createElement("div");
+			newText.innerHTML = thisText;
+			newText.classList.add('text');
+			thisDiv.appendChild(newText);
+		}
+		
+	//buttons for operating the itemDivs
+		//move-up button
+		function buttonUp(thisDiv){
+			let newButtonUp = document.createElement('button');
+			newButtonUp.innerHTML = '&#8593;';
+			newButtonUp.classList.add('sub_button');
+			newButtonUp.classList.add('button_up');
+			thisDiv.appendChild(newButtonUp);
+			newButtonUp.onclick = function(event){
+				let prev = event.currentTarget.parentElement.previousSibling;
+				let curr = event.currentTarget.parentElement;
+				document.querySelector("#right").insertBefore(curr,prev);
+				//change the up&down buttons when reordered
+				changeUpDown();
+			}
+
+		}
+		//move-down button
+		function buttonDown(thisDiv){
+			let newButtonDown = document.createElement('button');
+			newButtonDown.innerHTML = '&#8595;';
+			newButtonDown.classList.add('sub_button');
+			newButtonDown.classList.add('button_down');
+			thisDiv.appendChild(newButtonDown);
+			newButtonDown.onclick = function(event){
+				let curr = event.currentTarget.parentElement;
+				let next = event.currentTarget.parentElement.nextElementSibling;
+				document.querySelector("#right").insertBefore(next,curr);
+				//change the up&down buttons when reordered
+				changeUpDown();
+			}
+
+		}
+		//edit button
+		function buttonEdit(thisDiv){
+			let newButtonEdit = document.createElement('button');
+			newButtonEdit.innerHTML = '&#9997;';
+			newButtonEdit.classList.add('sub_button');
+			thisDiv.appendChild(newButtonEdit);
+			newButtonEdit.onclick = function(event){
+				//get a ref to the text <p> tag
+				let toBeEdited = event.currentTarget.parentElement.children[6];
+				//click once to edit; click twice to end edit and keep the input
+				if (toBeEdited.contentEditable == "true"){
+					event.currentTarget.innerHTML = '&#9997;';
+					toBeEdited.classList.remove('edit');
+					toBeEdited.contentEditable = "false";
+					
+				}else{
+					event.currentTarget.innerHTML = '&#9996';
+					toBeEdited.classList.add('edit');
+					toBeEdited.contentEditable = "true";
+				}
+			}
+		}
+
+		//add a check mark in the front of inner html
+		function addCheckMark(thisDiv){
+			let newCheckMark = document.createElement('div');
+			newCheckMark.innerHTML = "&#10003;";
+			newCheckMark.classList.add("check_mark");
+			newCheckMark.classList.add("hidden");
+			thisDiv.appendChild(newCheckMark);
+		}
+		//checked button
+		function buttonCheck(thisDiv){
+			let newButtonCheck = document.createElement('button');
+			newButtonCheck.innerHTML = '&#10003;';
+			newButtonCheck.classList.add('sub_button');
+			thisDiv.dataset.checked = '0' ;
+			thisDiv.appendChild(newButtonCheck);
+			newButtonCheck.onclick = function(){
+				if(thisDiv.dataset.checked == '0'){
+					console.log(thisDiv);
+					// newButtonCheck.classList.add('active');
+					thisDiv.children[0].classList.remove("hidden");
+					thisDiv.dataset.checked = '1';
+				}else{
+					// newButtonCheck.classList.remove('active');
+					thisDiv.children[0].classList.add("hidden");
+					thisDiv.dataset.checked = '0';
+				}
+			}
+		}
+		//delete button
+		function buttonDelete(thisDiv){
+			let newButtonDelete = document.createElement('button');
+			newButtonDelete.innerHTML = 'X';
+			newButtonDelete.classList.add('sub_button');
+			thisDiv.appendChild(newButtonDelete);
+			newButtonDelete.onclick = function(event){
+				document.querySelector('#right').removeChild(thisDiv);
+			}
+		}
+		//a function that add all sub-buttons
+		function addButtons(thisDiv){
+			addCheckMark(thisDiv);
+			buttonDelete(thisDiv);
+			buttonCheck(thisDiv);
+			buttonEdit(thisDiv);
+			buttonUp(thisDiv);
+			buttonDown(thisDiv);	
+		}
+		//check if this item div's position (first/middle/last)
+		function checkPrevNext(thisDiv){
+			let allItemDivs = document.querySelectorAll('.item');
+			for (let i = 0; i < allItemDivs.length; i++){
+				if (allItemDivs[i] == thisDiv){
+					if (i == 0 ){//first element
+						return 1;
+					}else if (i == (allItemDivs.length-1)){//last element
+						return 2;
+					}
+				}
+			}
+			return 0;//middle elements
+		}
+		//change the up&down button when the item divs NodeList in the #right is updated
+		function changeUpDown(){
+			let allItemDivs = document.querySelectorAll('.item');
+			//change the up & down buttons 
+			for (let i = 0; i < allItemDivs.length; i++){
+				if (checkPrevNext(allItemDivs[i]) == 1){//is first element/not prev
+					//no need for "Up", hide it
+					// allItemDivs[i].querySelector(".button_up").classList.add("hidden");
+					// allItemDivs[i].querySelector(".button_down").classList.remove("hidden");
+					allItemDivs[i].querySelector(".button_up").style.display = "none";
+					allItemDivs[i].querySelector(".button_down").style.display = "block";
+				}else if (checkPrevNext(allItemDivs[i]) == 2){
+					//no need for "Down"，hide it 
+					// allItemDivs[i].querySelector(".button_up").classList.remove("hidden");
+					// allItemDivs[i].querySelector(".button_down").classList.add("hidden");
+					allItemDivs[i].querySelector(".button_up").style.display = "block";
+					allItemDivs[i].querySelector(".button_down").style.display = "none";
+				}else{
+					// allItemDivs[i].querySelector(".button_up").classList.remove("hidden");
+					// allItemDivs[i].querySelector(".button_down").classList.remove("hidden");
+					allItemDivs[i].querySelector(".button_up").style.display = "block";
+					allItemDivs[i].querySelector(".button_down").style.display = "block";
+				}
+			}
+		}
+
+		//formulate the "Delete Entries" Button
+		deleteEntries.onclick = function(event){
+			let currentAllItems = document.querySelectorAll("#right .item");
+			let currentOption = selectDisplay.value;
+			console.log(currentAllItems)
+			if (currentOption == "all"){
+				for(let i = 0; i < currentAllItems.length; i++){
+					document.querySelector('#right').removeChild(currentAllItems[i]);
+				}
+				return;
+			}
+			for(let i = 0; i < currentAllItems.length; i++){
+				if (currentAllItems[i].dataset.mycategory == currentOption){
+					document.querySelector('#right').removeChild(currentAllItems[i]);
+					continue;
+				}
+			}
+		}
+
+	//"Filter" selection and filtered display
+		//get all the options in the filter 
+		var selectDisplay = document.querySelector('select');
+		selectDisplay.onchange = function(event){
+			//get all Item Divs in #right Div
+			let allItemDivs = document.querySelectorAll('.item');
+			//get current option's value
+			let value = event.currentTarget.value;
+			//compare each item Div's dataset with value
+			for (let i = 0; i < allItemDivs.length; i++){
+				if(value == allItemDivs[i].dataset.mycategory 
+					|| value == "all"){
+					allItemDivs[i].classList.remove('hidden');
+					continue;
+				}
+				//if not satisfy this filter option, hide item
+				allItemDivs[i].classList.add('hidden');
+			}
+		}
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

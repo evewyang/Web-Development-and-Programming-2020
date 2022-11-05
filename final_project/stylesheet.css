@@ -1,0 +1,197 @@
+html{
+	/*background-image: url("images/backgrounds/morning_opacity.jpg");*/
+	background-size: cover;
+}
+body{
+	width: 1100px;
+	margin: auto;
+	font-family: Helvetica;
+}
+#cover{
+	display: block;
+	position: relative;
+	width: 100%;
+	height: 300px;
+	/*background-image: url("images/backgrounds/morning.jpg");*/
+	background-repeat: no-repeat;
+	background-size: cover;		
+}
+#content{
+	position: relative;
+	width: 100%;
+	height: 740px;
+	background-color: white;
+}
+#left_info{
+	float: left;
+	width: 27%;
+	height: 100%;
+	background: beige;
+	box-sizing: border-box;
+	text-align: center;
+	padding-top: 30px;
+}
+#right_info{
+	float: left;
+	width: 73%;
+	height: 100%;
+	box-sizing: border-box;
+}
+#nav_bar{
+	height: 50px;
+	background-color: gray;
+}
+.tab{
+	display: block;
+	float: left;
+	text-decoration: none;
+	font-size: 17px;
+	padding: 15px 15px 15px 15px;
+	color: white;
+}
+.tab:hover{
+	color:yellow;
+}
+.active{
+	background-color: black;
+}
+.hidden{
+	display: none;
+}
+#greeting{
+	font-size: 40px;
+	text-align: center;
+	color: black;
+	text-shadow: gray 2px 2px;
+	padding-top: 70px;
+	font-weight: bold;
+}
+a{
+	text-decoration:none;
+	color: purple;
+}
+.social-media{
+	display: grid;
+	grid-template-columns: auto auto auto auto; 
+	padding: 3vw 1vw 0 1vw;
+}
+
+.social-media img{
+	width: 2.5vw;
+	min-width: 20px;
+}
+#right_info h1{
+	font-family: "Playfair Display", Georgia, serif;
+}
+.section{
+	padding: 50px;
+}
+#about{
+	font-size: 17px;
+}
+#education div{
+	width: 50%;
+	float: left;
+	box-sizing: border-box;
+	/*margin-right: 20px;*/
+}
+#float_menu{
+	position: fixed;
+	top: 0;
+	right: 0;
+    z-index:1;
+}
+#float_menu div{
+	width: 50px;
+	height: 50px;
+	border:2px solid #2266AA;
+	background:#FFFFFF;  
+	box-sizing: border-box;
+	font-size: 40px; 
+	text-align: center;
+	position: relative;
+}
+#close_menu{
+	background-color: red;
+	width: 20px;
+	height: 20px;
+	font-size: 10px;
+}
+#closed_menu{
+	width: 50px;
+	height: 5px;
+	background:#FFFFFF;
+	border:2px solid #2266AA; 
+}
+#left_icons{
+	width: 20%;
+	float: left;
+	text-align: center;
+}
+#left_icons img{
+	clear: both;
+	height: 100px;
+}
+#right_chart{
+	display: block;
+	width: 70%;
+	float: left;
+	height: 520px;
+	border-left:2px solid gray;
+}
+#web-form{
+  border-radius: 0.1vw;
+  background-color: #f2f2f2;
+  padding: 2vw;
+}
+label{
+	font-size: 14px;
+}
+
+input[type=text], textarea {
+  width: 100%;
+  padding: 3%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  margin-top: 1.5%;
+  margin-bottom: 4%;
+  resize: none;
+}
+
+input[type=submit],input[type=reset] {
+ 	background-color: #4CAF50;
+  	color: white;
+  	padding: 12px 20px;
+  	border: none;
+ 	border-radius: 4px;
+  	cursor: pointer;
+}
+
+input[type=submit]:hover{
+  	background-color: #45a049;
+}
+
+input[type=reset]{
+	background-color: blue;
+}
+
+input[type=reset]:hover{
+	background-color:#06C;
+}
+#num_like,#num_dislike{
+	font-size: 13px;
+	position: absolute;
+	left: 0;
+	bottom: 0;
+	font-weight: bold;
+}
+#admin_login_button{
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100px;
+	font-size: 20px;
+	border: 2px solid gray;
+	background-color: pink;
+}

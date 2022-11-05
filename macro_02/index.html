@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Macro Assignment #2</title>
+	<style type="text/css">
+		#container{
+			width: 1280px;
+			height: 994px;
+			border: 1px solid black;
+			margin: auto;
+			position: relative;
+			font-family: Helvetica;
+			z-index: 0;
+		}
+		#header{
+			position: absolute;
+			top: 50px;
+			left: 50px;
+			font-size: 300%;
+			color: #fff;
+		}
+		#timebox{
+			position: absolute;
+			top: 150px;
+			left: 50px;
+			font-size: larger;
+			background-color: white;
+			opacity: 0.8;
+			width: 400px;
+			height: 80px;
+			padding: 0 10px 20px 10px;
+			border-radius: 20px;
+		}
+		#legohead{
+			position: absolute;
+			bottom:279px;
+			right:275px;
+			z-index: 2;
+
+		}
+		#legobody{
+			position: absolute;
+			bottom: 0px;
+			right: 200px;
+			z-index: 1;
+		}
+		#lucky_number1{
+			position: absolute;
+			top: 130px;
+			right:110px;
+			z-index: 3;
+			transform: rotate(-5deg);
+		}
+		#lucky_number2{
+			position: absolute;
+			top: 145px;
+			right:230px;
+			z-index: 3;
+			transform: rotate(5deg);
+			
+		}
+		#lucky_number3{
+			position: absolute;
+			top: 120px;
+			right:350px;
+			z-index: 3;
+			transform: rotate(15deg);
+		}
+		#hat{
+			position: absolute;
+			bottom: 350px;
+			right: 275px;
+			z-index: 3;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		
+		<script type="text/javascript">
+		//background
+			//define all possibilities 
+			var words = ['Awesome', 'Fantastic', 'Fabulous', 'Superb', 'Perfect', 'Brilliant', 'Coming up Roses'];
+			//pick a word at random 
+			var i = parseInt(Math.random() * words.length);
+			document.write('<div id="header">Everything is '+words[i]+'!</div>');
+		</script>
+
+		<script>
+		//ask the client's computer for current time 
+			var currentTime = new Date();
+			console.log(currentTime);
+			var hours = currentTime.getHours();
+			var minutes = currentTime.getMinutes();
+			var amPm;
+			var greeting;
+
+			if (hours >= 0 && hours < 6){
+				amPm = "am";
+				greeting = "Good Night!";
+				document.write('<img id = "background"src="backgrounds/night.png">');
+			}else if (hours >= 6 && hours < 12){
+				amPm = "am";
+				greeting = "Good Morning!";
+				document.write('<img id = "background"src="backgrounds/morning.png">');
+			}else if (hours >= 12 && hours < 18){
+				amPm = "pm";
+				greeting = "Good Afternoon!";
+				document.write('<img id = "background"src="backgrounds/afternoon.png">');
+				hours -= 12;
+			}else{
+				amPm = "pm";
+				greeting = "Good Evening!";
+				document.write('<img id = "background"src="backgrounds/evening.png">');
+				hours -= 12;
+			}
+
+			if (minutes < 10){
+				minutes = '0'+ minutes;
+			}
+
+			function makeRandoms() {
+			    var randoms = [1,2,3,4,5,6,7,8,9];
+			    var rand;
+			    var out = [0,0,0];
+
+				function checkNum(randoms){
+			    	return randoms != rand;
+			    }
+
+			    for (var i = 0; i < 3; i++){
+			        rand = randoms[Math.floor(Math.random() * randoms.length)];
+			        randoms = randoms.filter(checkNum);
+			    	out[i] = rand;
+			    }
+				
+			    console.log(randoms);
+
+			    return {r1: out[0], r2:out[1], r3:out[2]};
+			}
+
+			var luckyNum = makeRandoms();
+		//define what's in the timebox
+			var timeboxLine = '<div id="timebox"><p>The time is currently '+hours+':'+minutes+amPm+' - ' +greeting+'</p><p>Your three lucky numbers today are '+luckyNum.r1+','+luckyNum.r2+' and '+ luckyNum.r3 +'</p></div>';
+
+			document.write(timeboxLine);
+
+			//Extra: display lucky numbers in a creative way 
+			document.write("<img id = 'lucky_number1' src = 'numbers/"+luckyNum.r1+".png'>")
+			document.write("<img id = 'lucky_number2' src = 'numbers/"+luckyNum.r2+".png'>")
+			document.write("<img id = 'lucky_number3' src = 'numbers/"+luckyNum.r3+".png'>")
+
+		</script>
+		
+		<script type="text/javascript">
+
+		//Lego head
+			//define all heads' possibilities 
+			var allheads = ['head1','head2','head3','head4','head5','head6'];
+			//pick a head at random
+			var j = parseInt(Math.random() * allheads.length);
+			document.write('<img id = "legohead" src="heads/'+allheads[j]+'.png">');
+		
+		// Lego Body
+	
+			//define all bodies' possibilities 
+			var allbodies = ['body1','body2','body3','body4','body5','body6'];
+			//pick a body at random
+			var k = parseInt(Math.random() * allbodies.length);
+			document.write('<img id = "legobody" src="bodies/'+allbodies[k]+'.png">');
+
+		//Extra: Lego hat
+			//define all hat's possibilities 
+			var allhats = ['baseball','helmet','joanne','santa','wizard'];
+			//pick a hat at random 
+			var l = parseInt(Math.random() * (allhats.length + 1));
+			if (l == allhats.length){
+				//display nothing;
+			}else{
+				document.write("<img id = 'hat' src = 'hats/"+allhats[l]+".png'>")
+			}
+
+		</script>
+
+	</div>
+</body>
+</html>
+
+
+
+
+

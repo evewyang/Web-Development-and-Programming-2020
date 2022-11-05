@@ -1,0 +1,15 @@
+<strong>2018~Now</strong><br><br>
+New York University-New York, NY<br><br>
+Expected time of Graduation: May 2022<br><br>
+Major: Mathematics(BA)<br><br>
+Minor:<li>Computer Science</li><li>Web Development</li><br>
+Current GPA: 3.86/4.0<br><br><br>
+
+<strong>Related Course Work:</strong><br><br>
+<li style="color: brown">Abstract Algebra</li>
+<li style="color: brown">Web Development & Programming</li> 
+<li style="color: brown">Computer System Organization</li>
+<li style="color: brown">Numerical Analysis</li>
+<li style="color: brown">Data Structure</li>
+<li style="color: brown">Mathematical Statistics</li>
+<li style="color: brown">Theory of Probability</li>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>My Daily Log</title>
+	<style type="text/css">
+		body{
+			font-family: Helvetica;
+		}
+		h1{
+			text-align: center;
+		}
+		input{
+			width: 60%;
+			height: 20px;
+			margin-top: 30px;
+		}
+		select{
+			margin-bottom: 30px;
+		}
+		#left{
+			float: left;
+			width: 60%;
+			box-sizing: border-box;
+		}
+		#right{
+			float: right;
+			width: 39%;
+			box-sizing: border-box;
+			text-align: center;
+			font-size: 18px;
+			padding-top: 20px;
+			
+		}
+		.tab{
+			display: block;
+			float: left;
+			width: 33%;
+			height: 40px;
+			text-align: center;
+			font-size: 18px;
+			padding-top: 20px;
+		}
+		.active{
+			background-color: #ccc;
+		}
+		#forms{
+			clear: both;
+			display: block;
+			margin-top: 100px;
+			padding-left: 20px;
+		}
+		.hidden{
+			display: none;
+		}
+		.show{
+			display: block;
+		}
+		.item{
+			height: 50px;
+			box-sizing: border-box;
+			text-align: left;
+			padding: 10px 0 0 20px;
+			margin: 3px;
+			position: relative;
+		}
+		.delete_button{
+			position: absolute;
+			right: 10%;
+			top: 10px;
+			width: 100px;
+			height: 25px;
+		}
+	</style>
+</head>
+<body>
+	<h1>My Daily Log</h1>
+	<!-- tabs and forms for the user  -->
+	<div id="left">
+		<div id="tabs">
+			<!-- the 3 tabs -->
+			<div id="tab_food" class="tab active" data-myform = "#form_food">Food</div>
+			<div id="tab_exercise" class="tab" data-myform = "#form_exercise">Exercise</div>
+			<div id="tab_mindfulness" class="tab" data-myform = "#form_mindfulness">Mindfulness</div>
+		</div>
+		<!-- the input form -->
+		<div id="forms">
+			<div id="form_food" class="form">
+				What did you eat today?</br>
+				<input type="text" id="food_input">
+				<button id="food_add" data-mycolor="#F63" data-mycategory = "food_item">Add</button>
+			</div>
+			<div id="form_exercise" class="form hidden">
+				What did you do to move?</br>
+				<input type="text" id="exercise_input">
+				<button id="exercise_add" data-mycolor="#0F9" data-mycategory = "exercise_item">Add</button>
+			</div>
+			<div id="form_mindfulness" class="form hidden">
+				How did you stay present?</br>
+				<input type="text" id="mindfulness_input">
+				<button id="mindfulness_add" data-mycolor="#96F" data-mycategory = "mindfulness_item">Add</button>
+			</div>
+		</div>
+		
+	</div>
+	<!-- filter and actual tasks that were added to the list -->
+	<div id="right">Filter:
+		<select id="filter">
+			<option value="all">All</option>
+			<option value="food_item">Food</option>
+			<option value="exercise_item">Exercise</option>
+			<option value="mindfulness_item">Mindfulness</option>
+		</select>
+	</div>
+	<script type="text/javascript">
+	//Tabs & display 
+		//have all tabs listen for the mouse events
+		let allTabs = document.querySelectorAll(".tab");
+		//visit all tabs to add mouse events
+		for (let i = 0; i< allTabs.length; i++){
+			allTabs[i].onclick = function(event){
+				//remove all .active from all other tabs
+				document.querySelector('.active').classList.remove('active');
+				//add the active tab to this tab
+				event.currentTarget.classList.add('active');
+				//hide all existing forms
+				let allForms = document.querySelectorAll('.form');
+				for (let j = 0; j < allForms.length; j++) {
+					allForms[j].classList.add('hidden');
+				}
+				//display the JUST form div for this catagory
+				document.querySelector(event.currentTarget.dataset.myform).classList.remove('hidden')
+			}
+		}
+	//"Add" buttons and #right Div
+		//get all form buttons
+		let allButtons = document.querySelectorAll(".form button");
+		//funcitoning the mouse event for each "Add" button
+		for (let i = 0; i < allButtons.length; i++){
+			allButtons[i].onclick = function(event){
+				//get the input text
+				let text = event.currentTarget.previousElementSibling.value;
+				//clearing the text that was just typed in the form
+				event.currentTarget.previousElementSibling.value = null;
+				//create the new div for putting on the #right
+				let tempDiv = document.createElement('div');
+				tempDiv.innerHTML = text;
+				tempDiv.classList.add('item');
+				tempDiv.style["background-color"] = event.currentTarget.dataset.mycolor;
+				tempDiv.dataset.mycategory = event.currentTarget.dataset.mycategory;
+				//add a delete button
+				let deletBtn = document.createElement('button');
+				deletBtn.innerHTML = 'Delete';
+				deletBtn.classList.add('delete_button');
+				//append delete button to the tempDiv
+				tempDiv.appendChild(deletBtn);
+				//delete the tempDiv from #right containter when click on "delete"
+				deletBtn.onclick = function(event){
+					document.querySelector('#right').removeChild(tempDiv);
+				}
+				//append tempDiv to the #right container
+				document.querySelector('#right').appendChild(tempDiv);
+			}
+		}
+	//"Filter" selection and filtered display
+		//get all the options in the filter 
+		let selectDisplay = document.querySelector('select');
+		selectDisplay.onchange = function(event){
+			//get all Item Divs in #right Div
+			let allItemDivs = document.querySelectorAll('.item');
+			//get current option's value
+			let value = event.currentTarget.value;
+			//compare each item Div's dataset with value
+			for (let i = 0; i < allItemDivs.length; i++){
+				if(value == allItemDivs[i].dataset.mycategory 
+					|| value == "all"){
+					allItemDivs[i].classList.remove('hidden');
+					continue;
+				}
+				//if not satisfy this filter option, hide item
+				allItemDivs[i].classList.add('hidden');
+			}
+		}
+		
+	</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+

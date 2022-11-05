@@ -1,0 +1,95 @@
+body{
+	font-family: Helvetica;
+}
+h1{
+	text-align: center;
+}
+input{
+	width: 60%;
+	height: 20px;
+	margin-top: 30px;
+}
+select{
+	margin-bottom: 30px;
+}
+#left{
+	float: left;
+	width: 60%;
+	box-sizing: border-box;
+}
+#right{
+	float: right;
+	width: 39%;
+	box-sizing: border-box;
+	padding-left: 50px;
+	font-size: 18px;
+	padding-top: 20px;
+	
+}
+.tab{
+	display: block;
+	float: left;
+	width: 33%;
+	height: 40px;
+	text-align: center;
+	font-size: 18px;
+	padding-top: 20px;
+}
+.tab:hover{
+	cursor: pointer;
+	text-decoration: underline;
+}
+#tab_food:hover{
+	color: #F63;
+	text-decoration-color: #F63;
+}
+#tab_exercise:hover{
+	color: #0F9;
+	text-decoration-color: #0F9;
+}
+#tab_mindfulness:hover{
+	color: #96F;
+	text-decoration-color: #96F;
+}
+.active{
+	background-color: #ccc;
+}
+#forms{
+	clear: both;
+	display: block;
+	margin-top: 100px;
+	padding-left: 20px;
+}
+.hidden{
+	display: none;
+}
+.item{
+	height: 50px;
+	box-sizing: border-box;
+	text-align: left;
+	padding: 10px 10px 0 10px;
+	margin: 3px;
+	position: relative;
+}
+.sub_button{
+	display: block;
+	float: right;
+	margin-left: 1px;
+	padding-right: 5px;
+	width: 30px;
+	height: 25px;
+}
+.check_mark{
+	float: left;
+	color: white;
+}
+.text{
+	float: left;
+	width: 50%;
+	height: 70%;
+	overflow-x: auto;
+	
+}
+.edit{
+	background-color: white;
+}

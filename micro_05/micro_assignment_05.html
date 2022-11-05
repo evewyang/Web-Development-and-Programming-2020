@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Micro 05</title>
+	<style type="text/css">
+		body{
+			margin-left: 30px;
+		}
+		#buttons{
+			margin-bottom: 20px;
+		}
+		#box{
+			display: block;
+			border: 4px solid black;
+			background-color: yellow;
+			height: 30px;
+			width: 30px;
+		}
+		#container{
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div id="buttons">
+		<button id="add_box">Add box to page in 1 second</button>
+		<button id="spin_left" data-clicks = "0">Spin Left</button>
+		<button id="spin_right" data-clicks = "0">Spin Right</button>
+		<button id="stop">Stop</button>
+	</div>
+	
+	<div id="box"></div>
+	<div id="container"></div>
+
+	<script type="text/javascript">
+		//get refs to tags
+		let addBoxBtn = document.getElementById("add_box");
+		let spinLeftBtn = document.getElementById("spin_left");
+		let spinRightBtn = document.getElementById("spin_right");
+		let stopBtn = document.getElementById("stop");
+		let box = document.getElementById("box");
+
+		function addBox(){
+			let newBox = document.createElement("div");
+			// box width/height range 30~60 randomly
+			newBox.style.width = ''+(parseInt(Math.random()*50)+30)+'px';
+			newBox.style.height = ''+(parseInt(Math.random()*50)+30)+'px';
+			//set random background color
+			let r = parseInt(Math.random() * 256)
+	        let g = parseInt(Math.random() * 256)
+	        let b = parseInt(Math.random() * 256)
+	        newBox.style.backgroundColor = "rgb("+r+","+g+","+b+")";
+	        newBox.style.float = "left";
+	        document.getElementById("container").appendChild(newBox);
+		}
+
+		addBoxBtn.addEventListener("click",function(event){
+			setTimeout(addBox, 1000);
+		})
+	//rotate the box 
+		//keep track of the current degree of the box
+		var currentDeg = 0;
+		//rotate left
+		function rotateLeft(){
+			box.style.transform = "rotate("+currentDeg+"deg)";
+			currentDeg -= 1;
+		}
+		//set a variable to store the "setInterval"
+		//based on the assumption of the question, there can be only one setInterval
+		var control;
+		//addEventListener to the #spin_left button 
+		spinLeftBtn.addEventListener("click", function(){
+			//first, clear any setInterval before doing anything
+			if (control != null){
+				clearInterval(control);
+			}
+			control = setInterval(rotateLeft,10);
+		});
+		//rotate right
+		function rotateRight(){
+			box.style.transform = "rotate("+currentDeg+"deg)";
+			currentDeg += 1;
+		}
+		//addEventListener to the #spin_right button 
+		spinRightBtn.addEventListener("click",function(){
+			//first, clear any setInterval before doing anything
+			if (control != null){
+				clearInterval(control);
+			}
+			control = setInterval(rotateRight,10);
+		});
+		//stop button
+		stopBtn.addEventListener("click",function(){
+			//clear any setInterval(...) when clicked
+			if (control != null){
+				clearInterval(control);
+			}
+		})
+
+
+	</script>
+</body>
+</html>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Micro Assignment #04--Calculator</title>
+	<style type="text/css">
+		body{
+			display: block;
+			position: relative;
+		}
+		div{
+			float: left;
+		}
+		#block_1{
+			width: 100px;
+			height: 100px;
+			margin-right: 10px;
+			text-align: center;
+			font-size: 30px;
+		}
+		#block_2{
+			width: 100px;
+			height: 100px;
+			margin-left: 10px;
+			text-align: center;
+			font-size: 30px;
+		}
+		#operation{
+			float: left;
+			width: 40px;
+			height: 25px;
+			margin-top: 40px;
+		}
+		#equal{
+			display: block;
+			float: left;
+			margin-top: 40px;
+			margin-left: 10px;
+			width: 30px;
+			height: 25px;	
+			border-radius: 5px;
+			border: 1px solid black;
+			background-color: #ededed;
+		}
+		#outcome{
+			width: 300px;
+			height: 40px;
+			margin-left: 15px;
+			margin-top: 35px;
+			font-size: 30px;
+			
+		}
+	</style>
+</head>
+<body>
+	<h1>Micro 04</h1>
+	<div>
+		<input type="text" id="block_1">
+	</div>
+	<div>
+		<select id="operation">
+			<option value="plus">+</option>
+			<option value="minuse">-</option>
+			<option value="multiply">*</option>
+			<option value="divide">/</option>
+		</select>
+	</div>
+	<div>
+		<input type="text" id="block_2">
+	</div>
+	<button id="equal">=</button>
+	<div id="outcome">?</div>
+	<script type="text/javascript">
+		var block1 = document.getElementById('block_1')
+		var block2 = document.getElementById('block_2')
+		var button = document.getElementById('equal')
+		var operation = document.getElementById('operation') 
+		var outcome = document.getElementById('outcome')
+		button.onclick = function(event){
+			let out;
+			let num1 = parseInt(block_1.value);
+			let num2 = parseInt(block_2.value);
+			if (operation.value =='plus' ) {
+				out =  num1 + num2;
+			}else if(operation.value == 'minuse'){
+				out = num1 - num2;
+			}else if(operation.value == 'multiply'){
+				out = num1 * num2;
+			}else{
+				out = num1/num2;
+			}
+			outcome.innerHTML = out 
+		}
+	</script>
+</body>
+</html>

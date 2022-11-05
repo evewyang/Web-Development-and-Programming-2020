@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Macro 06</title>
+	<style type="text/css">
+		body{
+			background: black;
+			color: white;
+			text-align: center;
+			font-size: 50px;
+			font-family: Chalkboard;
+			font-weight: bold;
+		}
+		p{
+			font-size: 30px;
+			font-weight: normal;
+		}
+		#start_button{
+			font-size: 20px;
+			height: 40px;
+			width: 100px;
+		}
+		.hidden{
+			display: none;
+		}
+		#timer{
+			font-size: 30px;
+			font-weight: normal;
+		}
+		#container{
+			width: 410px;
+			margin: auto;
+			margin-top: 40px;
+		}
+		.pokeball{
+			width: 100px;
+			height: 100px;
+		}
+		#result, #previous_best{
+			font-size: 30px;
+			font-weight: normal;
+			margin-top: 20px;
+		}
+		#restart_button{
+			width: 300px;
+			height: 70px;
+			font-size: 40px;
+			font-weight: normal;
+			margin-top: 30px;
+		}
+		#your_name{
+			font-size: 30px;
+			font-weight: normal;
+			margin-top: 5px;
+			margin-bottom: 5px;
+		}
+		input{
+			width: 200px;
+			height: 30px;
+			font-size: 20px;
+		}
+		#submit_button{
+			width: 50px;
+			height: 20px;
+			margin-left: 20px;
+		}
+	</style>
+</head>
+<body>
+	<!-- Panel one -->
+	<div id="start">
+		Memory Matching Madness!</br>
+		<p>Play a fast-paced game of "memory" and try to beat your best time!</p>
+		<button id="start_button">Start!</button>
+	</div>
+
+	<!-- Panel two -->
+	<div id="playing" class="hidden">
+		Ready , Set , Match!
+		<div id="timer"></div>
+		<!-- pokeballs will go here -->
+		<div id="container"></div>
+		<!-- make sound effects -->
+		<audio id="incorrect">
+			<source src="incorrect.wav" type="audio/wav">
+		</audio>
+		<audio id="correct">
+			<source src="correct.wav" type="audio/wav">
+		</audio>
+	</div>
+
+	<!-- Panel three -->
+	<div id="game_over" class="hidden">
+		Game Over!
+		<div id="result"></div>
+		<div id="your_name" class="hidden">Your Name is:  <input type="text" name="name" maxlength="20"><button id="submit_button">Submit</button></div>
+		<div id="previous_best" style="color: yellow"></div>
+		<button id="restart_button">Play Again!</button>
+	</div>
+
+	<!-- script -->
+	<script type="text/javascript">
+		//advanced from the start to the playing screen 
+		let startButton = document.getElementById("start_button");
+		let startPanel = document.getElementById("start");
+		let playingPanel = document.getElementById("playing");
+		let container = document.getElementById("container");
+		let endPanel = document.getElementById("game_over");
+		let timer = document.getElementById("timer");
+		let result = document.getElementById("result");
+		let restartButton = document.getElementById("restart_button");
+		let yourName = document.getElementById("your_name");
+		let submitName = document.getElementById("submit_button");
+		let previousBest = document.getElementById("previous_best");
+
+		var assets = ['snorlax.png', 'electrabuzz.png', 'chansey.png', 'oddish.png',
+              'pikachu.png', 'paras.png', 'arcanine.png', 'ponita.png',
+              'venonat.png', 'eggsecute.png', 'machop.png', 'pidgey.png',
+              'psyduck.png', 'tauros.png', 'vulpix.png', 'gloom.png',
+              'krabby.png', 'butterfree.png', 'bulbasaur.png', 'clefairy.png',
+              'koffing.png', 'goldeen.png', 'magikarp.png', 'beedrill.png',
+              'lapras.png', 'meowth.png', 'ekans.png', 'jigglypuff.png',
+              'horsea.png', 'polywog.png', 'sandshrew.png', 'rattata.png',
+              'gengar.png', 'eevee.png', 'bellsprout.png', 'squirtle.png',
+              'seel.png', 'caterpie.png'];
+
+		var ball1 = false;
+		var ball2 = false;
+		var match = 0;
+		startButton.onclick = function(event){
+			startPanel.classList.add("hidden");
+			playingPanel.classList.remove("hidden");
+
+			setTimer();
+
+			//pick 6 random images, and double them
+			let sixPairs = randomPokemons();
+			
+			for (let i = 0; i < 12; i++){
+				let tempBall = document.createElement("img");
+				tempBall.src = 'images/pokeball.png';
+				tempBall.classList.add("pokeball");
+				tempBall.dataset.myImg = sixPairs[i];
+				tempBall.dataset.flipped = "false";
+				container.appendChild(tempBall);
+				console.log(tempBall);
+
+				tempBall.onclick = function(event){
+					//cannot click the flipped ball 
+					if (event.currentTarget.dataset.flipped == "false"){
+						//are we the first ball to be clicked?
+						if (ball1 == false){
+							//we are the first ball to be clicked!
+							ball1 = event.currentTarget;
+							event.currentTarget.src = "images/"+ball1.dataset.myImg+"";
+
+						}else if (ball2 == false && event.currentTarget !== ball1){
+							//this must be the second ball being cliked, which must be different from the first ball
+							ball2 = event.currentTarget;
+							event.currentTarget.src = "images/"+ball2.dataset.myImg+"";
+							//compare!
+							if (ball1.dataset.myImg == ball2.dataset.myImg){
+								match += 1;
+								correctSound();
+								ball1.dataset.flipped = "true";
+								ball2.dataset.flipped = "true";
+								ball1 = false;
+								ball2 = false;
+								console.log(match);
+								checkEnding();
+							}else{
+								//put them back to their original img
+								incorrectSound();
+								setTimeout(backToPokeballs,1000);
+							}
+						}
+					}
+				}
+			}
+		}
+
+		function setGame(){
+			setTimer();
+			//pick 6 random images, and double them
+			let newSixPairs = randomPokemons();
+			let allPokemonBalls = document.querySelectorAll("#container img");
+			for (let i = 0; i < 12; i++){
+				allPokemonBalls[i].src = 'images/pokeball.png';
+				allPokemonBalls[i].dataset.myImg = newSixPairs[i];
+				allPokemonBalls[i].dataset.flipped = "false";
+
+				allPokemonBalls[i].onclick = function(event){
+					//cannot click the flipped ball 
+					if (event.currentTarget.dataset.flipped == "false"){
+						//are we the first ball to be clicked?
+						if (ball1 == false ){ 
+							//we are the first ball to be clicked!
+							ball1 = event.currentTarget;
+							event.currentTarget.src = "images/"+ball1.dataset.myImg+"";
+
+						}else if (ball2 == false && event.currentTarget !== ball1){
+							//this must be the second ball being cliked, which must be different from the first ball
+							ball2 = event.currentTarget;
+							event.currentTarget.src = "images/"+ball2.dataset.myImg+"";
+							//compare!
+							if (ball1.dataset.myImg == ball2.dataset.myImg){
+								match += 1;
+								correctSound();
+								ball1.dataset.flipped = "true";
+								ball2.dataset.flipped = "true";
+								ball1 = false;
+								ball2 = false;
+								console.log(match);
+								checkEnding();
+
+							}else{
+								//put them back to their original img
+								incorrectSound();
+								setTimeout(backToPokeballs,1000);
+							}
+						}
+					}
+					
+				}
+
+			}
+		}
+
+		function randomPokemons(){
+			let listCopy = assets;
+			let newSix = [];
+
+			for (let i = 0; i < 6; i++){
+				let rand = parseInt(Math.random() * listCopy.length);
+				newSix[i] = listCopy.splice(rand,1);
+			}
+			//double the array to make pairs 
+			let allTwelve = newSix.concat(newSix);
+			//randomize the list
+			return shuffle(allTwelve);
+		}
+
+		function shuffle(array){
+			var currentIndex = array.length, temporaryValue, randomIndex;
+			// While there remain elements to shuffle...
+		    while (0 !== currentIndex) {
+			    // Pick a remaining element...
+			    randomIndex = Math.floor(Math.random() * currentIndex);
+			    currentIndex -= 1;
+			    // And swap it with the current element.
+			    temporaryValue = array[currentIndex];
+			    array[currentIndex] = array[randomIndex];
+			    array[randomIndex] = temporaryValue;
+	  		}
+
+  			return array;
+		}
+
+		function backToPokeballs(){
+			ball1.src = 'images/pokeball.png';
+			ball2.src = 'images/pokeball.png';
+			ball1 = false;
+			ball2 = false;
+		}
+		function correctSound(){
+			let sound = document.getElementById("correct");
+			sound.play();
+		}
+		function incorrectSound(){
+			let sound = document.getElementById("incorrect");
+			sound.play();
+		}
+		//advanced from the playing screen to the game-over screen 
+		function checkEnding(){
+			if (match == 6){
+				clearInterval(controlTime);
+				playingPanel.classList.add("hidden");
+				endPanel.classList.remove("hidden");
+				displayResult();
+				restartButton.onclick = function(event){
+					endPanel.classList.add("hidden");
+					playingPanel.classList.remove("hidden");
+					setGame();
+					match = 0;
+
+				}
+
+			}
+		}
+
+		var controlTime;
+		var time;
+		var rankBoard;
+		function setTimer(){
+			time = 0;
+			timer.innerHTML = "Time: 0 s"
+			controlTime = setInterval(function(){
+				time += 1;
+				timer.innerHTML = "Time: "+ time +" s";
+			}, 1000)
+		}
+
+
+		function displayResult(){
+			//if there is a personal best
+			if (window.localStorage.getItem("Personal Best")){
+				previousBest.innerHTML = "Previous High Score: "+window.localStorage.getItem("Personal Best")+" s - " +window.localStorage.getItem("Best Player");
+				if (time >= window.localStorage.getItem("Personal Best")){
+					yourName.classList.add("hidden");
+					result.innerHTML = "Your time: " + time +" s</br>Best time: "+window.localStorage.getItem("Personal Best")+" s";
+					return;
+				}
+				
+			}
+			result.innerHTML = "Your time: " + time +" s</br>Best time: "+ time +" s - New High Score!";
+			window.localStorage.setItem("Personal Best", time);
+			yourName.classList.remove("hidden");
+			//defult: save the same as anonymous 
+			window.localStorage.setItem("Best Player", "anonymous");
+			previousBest.innerHTML = "Previous High Score: "+window.localStorage.getItem("Personal Best")+" s - " +window.localStorage.getItem("Best Player");
+			submitName.onclick = function(event){
+				console.log(event.currentTarget.previousElementSibling.value);
+				if (event.currentTarget.previousElementSibling.value.length != 0){
+					window.localStorage.setItem("Best Player", event.currentTarget.previousElementSibling.value);
+				}else{
+					window.localStorage.setItem("Best Player", "anonymous");
+				}
+				previousBest.innerHTML = "Previous High Score: "+window.localStorage.getItem("Personal Best")+" s - " +window.localStorage.getItem("Best Player");
+			}
+
+		}
+
+		//set the result for the end panel
+		// //set an object to keep the 3 highest score
+		// function getRankBoard(){
+		// 	if (window.localStorage.getItem(rankBoard)){
+		// 		return true;
+		// 	}else{
+		// 		rankBoard = [];
+		// 		window.localStorage.setItem("Rank Board",rankBoard);
+		// 		return false;
+		// 	}
+		// }
+
+		//---------
+		// var rankBoard = [{name:"a", time: 30},{name:"b",time:200},{name:"c",time:10}];
+		// function displayResult(){
+		// 	var player = {};
+		// 	//furnish the submit button
+		// 	submitName.onclick = function(event){
+		// 		let a = event.currentTarget.previousElementSibling.value;
+		// 		let b = time;
+		// 		if (a != null){
+		// 			player = {name: a , time: b};
+		// 			keepThreeHighest(player);
+		// 			return;
+		// 		}
+		// 		player = {name: "anonymous" , time: b};
+		// 		console.log(player);
+		// 		keepThreeHighest(player);
+		// 	}
+		// 	//furnish the result display 
+		// 	//if there is rank board
+		// 	if (getRankBoard()){
+		// 		//1) current Time >= 3rd/last highest 
+		// 		if (time >= window.localStorage.getItem("Rank Board")[window.localStorage.getItem("Rank Board").length-1].time){
+		// 			//check length of Rank Board
+		// 			if (window.localStorage.getItem("Rank Board").length < 3){
+		// 				yourName.classList.remove("hidden");
+
+		// 			}else{
+		// 				yourName.classList.add("hidden");
+		// 			}
+		// 			//print the result condition for this round
+		// 			result.innerHTML = "Your time: " + time +" s</br>Best time: "+window.localStorage.getItem("Rank Board")[0].time +" s";
+		// 		}//current Time < 3rd/last highest
+		// 		else{
+		// 			//need to type in the name
+		// 			yourName.classList.type("hidden");
+		// 			//print the result condition for this round
+		// 			//2) 1st Highest < current Time < 3rd Highest
+		// 			if (time > window.localStorage.getItem("Rank Board")[0]){
+		// 				//if the current time is longer than the 1st and shorter than 3rd/last on Rank Board
+		// 				result.innerHTML = "Your time: " + time +" s</br>Best time: "+window.localStorage.getItem("Rank Board")[0].time +" s";
+		// 			}//3) current Time < 1st Highest
+		// 			else{
+		// 				//if the current time is shorter than the 1st on Rank Board
+		// 				result.innerHTML = "Your time: " + time +" s</br>Best time: "+ time +" s - New High Score!";
+		// 			}
+					
+		// 		}
+		// 	}//4) If there is no rank board -> auto new best
+		// 	else{
+		// 		result.innerHTML = "Your time: " + time +" s</br>Best time: "+ time +" s - New High Score!";
+		// 		//need to type in the name
+		// 		yourName.classList.remove("hidden");
+
+		// 	}
+			
+			
+		// 	//print the rank board
+		// 	printRankBoard();
+		// }
+
+		// function keepThreeHighest(thisScore){
+		// 	//get the Rank Board 
+		// 	let rankBoard = window.localStorage.getItem("Rank Board");
+		// 	console.log(typeof(rankBoard));
+		// 	console.log(thisScore);
+
+		// 	if (rankBoard == null){
+		// 		rankBoard = [thisScore];
+		// 		console.log(rankBoard);
+		// 		window.localStorage.setItem("Rank Board", rankBoard);
+
+		// 	}else{
+		// 		//append the score of this time to the end of rankBoard
+		// 		rankBoard.push(thisScore);
+		// 	}
+		// 	//sort the rankBoard from highest score/value to lowest
+		// 	//bubble sort
+		// 	for (let i = 0; i < rankBoard.length -1; i++){
+		// 		for (let j = i+1 ; j < rankBoard.length; j++){
+		// 			if (rankBoard[i].time > rankBoard[j].time){
+		// 				let temp = rankBoard[i];
+		// 				rankBoard[i] = rankBoard[j];
+		// 				rankBoard[j] = temp; 
+		// 			}
+		// 		}
+		// 	}
+		// 	//remove the last object
+		// 	if (rankBoard.length > 3){
+		// 		rankBoard.pop();
+		// 	}
+		// 	console.log(rankBoard);
+		// 	window.localStorage.setItem("Rank Board",rankBoard);
+		// }
+
+		// function printRankBoard(){
+		// 	//call this only when you have verified the "Rank Board" exist in local storage 
+		// 	previousBest.innerHTML = "Previous High Score: </br>";
+		// 	for (let i = 0; i < window.localStorage.getItem("Rank Board").length; i++){
+		// 		previousBest.innerHTML += window.localStorage.getItem("Rank Board")[i].time + " - " + window.localStorage.getItem("Rank Board")[i].name + "</br>";
+		// 	}
+		// }
+		
+	</script>
+</body>
+</html>

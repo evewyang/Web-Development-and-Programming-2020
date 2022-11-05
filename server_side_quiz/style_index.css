@@ -1,0 +1,56 @@
+body{
+	font-family: Chalkboard;
+	font-weight: bold;
+	background-image:url("images/backgrounds/background4.jpg");
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-attachment: fixed; 
+	padding-left: 30px;
+	padding-right: 30px;
+}
+h1{
+	color: yellow;
+	text-shadow: 2px 2px black;
+	display: block;
+	padding-bottom: 20px;
+	width: 830px;
+	border-bottom: 2px solid gray;
+}
+select{
+	width: 200px;
+	height: 20px;
+	font-size: 13px;
+	background-color: #D3AF7E;
+	margin-bottom: 5px;
+}
+form{
+	font-size: 20px;
+	display: block;
+	width: 600px;
+	border-bottom: 2px solid gray;
+	padding: 10px 0 35px 0px;
+}
+strong{
+	color: red;
+	font-family: Helvetica;
+	font-size: 12px;
+	padding-left: 10px;
+}
+#result{
+	width: 220px;
+	height: 30px;
+	margin-top: 20px;
+	font-size: 12px;
+	font-weight: bold;
+	background-color: #EB5B33;
+	border-radius: 5px;
+}
+#container{
+	width: 600px;
+	height: 320px;
+	background-color: white;
+	opacity: 0.9;
+	padding-top: 10px;
+	padding-left: 20px;
+	border-radius: 20px;
+}

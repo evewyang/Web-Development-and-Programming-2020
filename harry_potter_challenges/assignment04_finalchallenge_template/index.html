@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="en-us">
+  <head>
+    <title>Design Your own Hogwarts!</title>
+    <style type="text/css">
+      body{
+        font-family: Helvetica;
+      }
+      #container{
+        display: block;
+        position: relative;
+      }
+      #show{
+        display: block;
+        position: absolute;
+        width: 320px;
+        height: 320px;
+        border: 2px solid black;
+        margin-top: 50px;
+      }
+      #assets{
+        display: block;
+        position: absolute;
+        left: 330px;
+        padding: 20px;
+        box-sizing: border-box;
+      }
+      .tile_box{
+        display: block;
+        box-sizing: border-box;
+        float: left;
+        margin: 3px;
+        width: 32px;
+        height: 32px;
+      }
+      .show_box{
+        display: block;
+        box-sizing: border-box;
+        float: left;
+        width: 32px;
+        height: 32px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <h1>Design Your Own Hogwarts!</h1>
+    <div id="contianer">
+      <div id="show"></div>
+      <div id="assets">
+        <div style="border-bottom: 2px solid gray; margin-bottom: 10px;padding-bottom: 5px;">
+        Click on a tile here to select it. Then click on the map to the left to place the tile.
+        </div>
+      </div>
+    </div>
+
+    <!-- load in the image array file - this makes available a new array of all image filenames that you can use for this project -->
+    <!-- Assets courtesy of Crawl Stone Soup: https://github.com/crawl/tiles -->
+    <script src="image_array.js"></script>
+    <script>
+  //Manage the Left/Show box
+      var holdTileSrc;
+    //get ref to the big show box on the left
+      var showBox = document.getElementById("show")
+      //create 100 divs in the "#show" div on the left
+      for (let j = 0; j < 100; j++) {
+        //create new div in show box
+        let newShow = document.createElement('div');
+        newShow.classList.add('show_box');
+        showBox.appendChild(newShow);
+        newShow.onmouseover = function(event){
+          hoverShow(this);
+        }
+        newShow.onmouseout = function(event){
+          unhoverShow(this);
+        }
+        newShow.onclick = function(event){
+          clickShow(this);
+        }
+      } 
+
+      function hoverShow(thisDiv){
+        thisDiv.style.border = "4px solid red";
+        //change the img style when hover
+        if(thisDiv.firstChild != null && thisDiv.firstChild.src != null){
+          thisDiv.firstChild.style.width = '26px';
+          thisDiv.firstChild.style.height = '26px';
+        }
+      }
+      function unhoverShow(thisDiv){
+        thisDiv.style.border = null;
+        if(thisDiv.firstChild != null){
+          thisDiv.firstChild.style.width = '32px';
+          thisDiv.firstChild.style.height = '32px';
+        }
+        
+      }
+      function clickShow(thisDiv){
+        //check if the div already had a child img element & need to copy from right
+        if (thisDiv.firstChild == null && holdTileSrc != null) {
+          //if have none img:
+          //create a new img tag to hold tiles in the future 
+          let newShowImg = document.createElement('img');
+          //add newShowImg as a child to newShow
+          thisDiv.appendChild(newShowImg);
+        }
+        //copy the tile from assets(right) to the show box(left)
+        if (holdTileSrc != null){
+            thisDiv.firstChild.src = holdTileSrc;
+            thisDiv.firstChild.style.width = '26px';
+            thisDiv.firstChild.style.height = '26px';
+        }
+      }
+  //Manage the right/Assest box
+      //get refs to the elements
+      var assets = document.getElementById('assets');
+      var prevTarget;
+      for (let i = 0; i < array_library.length; i++){
+        //create a new div in asset box
+        let newAsset = document.createElement('div');
+        newAsset.classList.add('tile_box');
+        //create new img element
+        let newAssetImg = document.createElement('img');
+        newAssetImg.src = array_library[i];
+        //add img as a child to div
+        newAsset.appendChild(newAssetImg);
+        //add div as a child to #assets
+        assets.appendChild(newAsset);
+        newAsset.onclick = function(event){
+          if (this != prevTarget && prevTarget != null){
+            unclickAssest(prevTarget);
+          }
+          clickAssest(this);
+          holdAssest(this.firstChild.src);
+          prevTarget = event.currentTarget;
+        }
+      }
+      //set the "selected" indicator
+      function clickAssest(thisDiv){
+        thisDiv.style.border = '4px solid yellow';
+        thisDiv.firstChild.style.width = '26px';
+        thisDiv.firstChild.style.height = '26px';
+      }
+      //unselect the tile/ when select the other tile 
+      function unclickAssest(thisDiv){
+        thisDiv.style.border = 'none';
+        thisDiv.firstChild.style.width = '32px';
+        thisDiv.firstChild.style.height = '32px';
+      }
+      //remember the src of the tile selected for future use
+      function holdAssest(thisSrc){
+        holdTileSrc = thisSrc;
+      }
+
+
+    </script>
+
+
+  </body>
+</html>

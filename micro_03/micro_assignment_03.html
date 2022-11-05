@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+
+  <head>
+    <title>Micro 03</title>
+    <style>
+      /* you may not make any changes to the CSS rules below */
+      .blue {
+        color: blue;
+      }
+      .pink {
+        color: pink;
+      }
+      .square {
+        width: 100px;
+        height: 100px;
+        border: 1px solid black;
+        box-sizing: border-box;
+        display: inline-block;
+        font-size: 200%;
+        margin: 0px;
+      }
+      .yellow {
+        background-color: yellow;
+      }
+      .red {
+        background-color: red;
+      }
+      .orange {
+        background-color: orange;
+      }
+      .container {
+        width: 502px;
+        height: 202px;
+        border: 1px solid black;
+        box-sizing: border-box;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- you may not directly change any HTML on this page
+         you can only use JavaScript in the 'script' tag below
+         to make changes -->
+    <div id="box1">
+      <div class="square yellow">1</div>
+      <div class="square yellow">3</div>
+      <div class="square yellow">4</div>
+      <div class="square yellow">2</div>
+      <div class="square yellow">5</div>
+    </div>
+    <div id="box2">
+      <div class="square red">6</div>
+      <div class="square red">9</div>
+      <div class="square red">8</div>
+      <div class="square red">10</div>
+      <div class="square red">7</div>
+    </div>
+
+    <div id="box4" class="container"></div>
+    <div id="box5" class="container"></div>
+
+    <script>
+
+      // Task #1: change all yellow squares to red square,
+      //          and all red square to yellow squares. you must use the
+      //          provided classes for this (you cannot use inline styles)
+
+      let boxOneSquares = document.querySelectorAll(".yellow")
+      let boxTwoSquares = document.querySelectorAll(".red")
+      for (let i = 0; i < boxOneSquares.length; i++){
+        boxOneSquares[i].classList.add("red")
+        boxOneSquares[i].classList.remove("yellow")
+        boxTwoSquares[i].classList.add("yellow")
+        boxTwoSquares[i].classList.remove("red")
+      }
+      
+      // Task #2: change all squares that have even numbers in them
+      //          so that they use the 'blue' class, and all odd numbered
+      //          squares so that they use the 'pink' class
+      let boxes = document.getElementsByClassName("square")
+      for (let j = 0; j < boxes.length; j++){
+        if((boxes[j].innerHTML % 2) == 0){
+          boxes[j].classList.add("blue")
+        }else{
+          boxes[j].classList.add("pink")
+        }
+      }
+
+      // Task #3: add 10 divs with classes of 'orange' and 'square'
+      //          to the div with an id of 'box4'
+      let boxFour = document.getElementById("box4")
+      for (let k = 0; k < 10; k++){
+        let tempBox = document.createElement('div')
+        tempBox.classList.add('orange','square')
+        boxFour.appendChild(tempBox)
+      }
+
+      // Task #4: add 10 divs with a class of 'square' and a RANDOMLY
+      //          selected class of orange, red or yellow to the div
+      //          with an id of box5
+      let boxFive = document.getElementById('box5')
+      var randInt 
+      var colorList = ['orange','red','yellow']
+      for (let l = 0; l < 10; l++){
+        let randBox = document.createElement('div')
+        randInt = parseInt(Math.random() * colorList.length)
+        console.log(randInt)
+        randBox.classList.add('square',colorList[randInt])
+        boxFive.appendChild(randBox)
+      }
+    </script>
+
+  </body>
+
+</html>
