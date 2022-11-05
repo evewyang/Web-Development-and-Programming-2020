@@ -1,1 +1,13 @@
-# Web-Development-and-Programming-2020
+# Web Development and Programming 2020
+<strong>Contents</strong>: HTML, CSS, Client-side JavaScript(Language Basics, Functions, Objects, Decisions, Loops, Document Object Model, Events, Libraries & Web APIs), Server-side Technologies(The LAMP stack, Traditional CGI (Python, PHP), Asynchronous JavaScript and XML (AJAX), Application Programming Interfaces (APIs))<br><br>
+<a href="./index.html">Landing Page</a>: the directory-like starter page that links to all projects<br>
+<a href="./macro_02">Lego Welcome</a>: "randomized" web page that will give the user information that they can use in order to help their day progress in a more positive way<br>
+<a href="./cup_and_coin/index.html">Find a Coin!</a>: game of chance for users to find a hidden coin under a cup; win money if found while lose money if not given a good guess; lose if your "bank" amount reaches 0<br>
+<a href="./harry_potter_challenges">Harry Potter and the Chamber of the DOM</a>: complete all 3 challeges(Pixel Spells, Wizard Summoning, Locked Potions Cabinet) to get 3 spells for unlocking the final challenge!<br>
+<a href="./my_daily_log">My Daily Log</a>: an interactive interface to keep track of your daily activity; use as to-do list by modifying logs; ordering your logs by importance<br>
+<a href="./matching_game/index.html">Pokemon Matching Game</a>: allows visitors to try and match a series of hidden tokens; speed is key, and the best time will be stored as the 'high score' on your computer - future players will need to try and beat that score in order to become the new matching champion<br>
+<a href="./server_side_quiz">Server-side Quizzing System</a>: use this simple PHP quizzing system to find out which Simpson character you are; check out all other's result (previous records) in display after the quiz <br>
+<a href="./php_harry_potter_site">Harry Potter "CRUD" Application</a>: a muli-page "CRUD" site (Create, Read, Update, Delete) for a content management system via PHP<br>
+<a href="./ajax_chat_room">Chat Room</a>: a live-streaming platform built with PHP and AJAX that allows user registration and chatting; opening new chatrooms freely; admin accounts can manage chatrooms by logging in, deleting any chatroom's history/any chatroom, updating "banned words" list, keeping track of user logs(who's using the chat room, when they used it, their IP addresses, etc)<br>
+<a href="./final_project">Final Project</a>: a personal website that lists CV, all my past experiences, and allows teachers, former employers etc. to leave supportive comments for reference; visitors can like/dislike the site and even play a jumping stickman game(much like the Dinosaur Game on chrome when the internet connetion goes bad...)! Admin(me) with the username and password can keep track of user logs
+
